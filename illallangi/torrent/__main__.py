@@ -6,7 +6,7 @@ from loguru import logger
 
 from notifiers.logging import NotificationHandler
 
-from .torrentfile import TorrentFile
+from .api import API as TORRENT_API
 
 
 @group()
@@ -40,8 +40,9 @@ def cli(log_level, slack_webhook, slack_username, slack_format):
         logger.add(slack, format=slack_format, level="SUCCESS")
 
 
-@cli.command(name='get')
-@argument('torrent_files',
+@cli.command(name='import')
+@option('--cache/--no-cache', default=True)
+@argument('paths',
           type=PATH(exists=True,
                     file_okay=True,
                     dir_okay=False,
@@ -51,9 +52,18 @@ def cli(log_level, slack_webhook, slack_username, slack_format):
                     allow_dash=False),
           required=True,
           nargs=-1)
-def get(torrent_files):
-    for torrent_file in torrent_files:
-        logger.info(TorrentFile(torrent_file))
+def import_torrents(cache, paths):
+    api = TORRENT_API(cache)
+    for path in paths:
+        api.import_torrent(path)
+
+
+@cli.command(name='list')
+@option('--cache/--no-cache', default=True)
+def list_torrents(cache):
+    api = TORRENT_API(cache)
+    for torrent_file in api.get_torrents():
+        logger.info('{}: {}', torrent_file.hash, torrent_file.announce_list)
 
 
 if __name__ == "__main__":

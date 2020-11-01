@@ -23,9 +23,21 @@ class TorrentFile(BEncodedFile):
         return f'Torrent.TorrentFile("{self.file}")'
 
     @property
+    def json(self):
+        return {
+            k: v
+            for k, v in {
+                'hash': self.hash,
+                'announce-list': self.announce_list
+            }.items()
+            if v is not None
+        }
+
+    @property
     def keys(self):
         return [
             b'announce',
+            b'announce-list',
             b'comment',
             b'created by',
             b'creation date',
@@ -39,6 +51,8 @@ class TorrentFile(BEncodedFile):
             b'log_callback',
             b'url-list',
             b'width',
+            b'azureus_properties',
+            b'comment.utf-8',
         ]
 
     @property
@@ -48,6 +62,16 @@ class TorrentFile(BEncodedFile):
     @property
     def announce(self):
         return self.dictionary.get(b'announce').decode(self.encoding or 'UTF-8') if b'announce' in self.dictionary else None
+
+    @property
+    def announce_list(self):
+        return [
+            [
+                url.decode(self.encoding or 'UTF-8')
+                for url in tier
+            ]
+            for tier in self.dictionary.get(b'announce-list')
+        ] if b'announce-list' in self.dictionary else [[self.announce]]
 
     @property
     def comment(self):

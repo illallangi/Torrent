@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="illallangi-github-api",
+    name="illallangi-torrent",
     version="0.0.1",
     author="Andrew Cole",
     author_email="andrew.cole@illallangi.com",
@@ -20,7 +20,7 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     entry_points={
-        'console_scripts': ['torrent=torrent:__main__.cli'],
+        'console_scripts': ['torrent=illallangi.torrent:__main__.cli'],
     },
     install_requires=[
         'bencodepy',

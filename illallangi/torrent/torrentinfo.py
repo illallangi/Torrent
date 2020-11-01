@@ -15,6 +15,7 @@ class TorrentInfo(object):
     @property
     def keys(self):
         return [
+            b'entropy',
             b'files',
             b'length',
             b'name',
@@ -25,6 +26,10 @@ class TorrentInfo(object):
             b'source',
             b'x_cross_seed',
         ]
+
+    @property
+    def entropy(self):
+        return self.dictionary.get(b'entropy').decode(self.encoding or 'UTF-8') if b'entropy' in self.dictionary else None
 
     @property
     def files(self):
