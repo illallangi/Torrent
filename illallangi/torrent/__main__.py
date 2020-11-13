@@ -6,7 +6,7 @@ from loguru import logger
 
 from notifiers.logging import NotificationHandler
 
-from .api import API as TORRENT_API
+from illallangi.torrentapi import API as TORRENT_API
 
 
 @group()

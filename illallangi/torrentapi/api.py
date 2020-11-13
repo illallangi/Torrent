@@ -13,7 +13,7 @@ from loguru import logger
 from .torrentfile import TorrentFile
 
 
-EXPIRE = 7 * 24 * 60 * 60
+EXPIRE = None
 
 
 class API(object):
@@ -26,7 +26,6 @@ class API(object):
     def get_torrent(self, hash):
         with Cache(self.config_path) as cache:
             if not self.cache or hash not in cache:
-                logger.info('Cache miss, reading torrent {}', hash)
                 cache.set(
                     hash,
                     TorrentFile(join(self.config_path, hash + '.torrent')),
