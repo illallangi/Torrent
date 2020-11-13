@@ -6,31 +6,19 @@ from shutil import copyfile
 
 from click import get_app_dir
 
-from diskcache import Cache
-
 from loguru import logger
 
 from .torrentfile import TorrentFile
 
 
-EXPIRE = None
-
-
 class API(object):
     def __init__(self, cache=True, config_path=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.cache = cache
         self.config_path = get_app_dir(__package__) if not config_path else config_path
         makedirs(self.config_path, exist_ok=True)
 
     def get_torrent(self, hash):
-        with Cache(self.config_path) as cache:
-            if not self.cache or hash not in cache:
-                cache.set(
-                    hash,
-                    TorrentFile(join(self.config_path, hash + '.torrent')),
-                    expire=EXPIRE)
-            return cache[hash]
+        return TorrentFile(join(self.config_path, hash + '.torrent'))
 
     def get_torrents(self):
         reg_expr = compile(translate('*.torrent'), IGNORECASE)

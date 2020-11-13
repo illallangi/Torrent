@@ -20,9 +20,12 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     entry_points={
-        'console_scripts': ['torrent=illallangi.torrent:__main__.cli'],
+        'console_scripts': ['torrent-tool=illallangi.torrent:__main__.cli'],
     },
     install_requires=[
         'bencodepy',
+        'click',
+        'loguru',
+        'notifiers',
     ]
 )
