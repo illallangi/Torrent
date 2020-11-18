@@ -12,7 +12,7 @@ from .torrentfile import TorrentFile
 
 
 class API(object):
-    def __init__(self, cache=True, config_path=None, *args, **kwargs):
+    def __init__(self, config_path=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.config_path = get_app_dir(__package__) if not config_path else config_path
         makedirs(self.config_path, exist_ok=True)

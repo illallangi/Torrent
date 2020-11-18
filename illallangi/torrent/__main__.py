@@ -41,7 +41,6 @@ def cli(log_level, slack_webhook, slack_username, slack_format):
 
 
 @cli.command(name='import')
-@option('--cache/--no-cache', default=True)
 @argument('paths',
           type=PATH(exists=True,
                     file_okay=True,
@@ -52,16 +51,15 @@ def cli(log_level, slack_webhook, slack_username, slack_format):
                     allow_dash=False),
           required=True,
           nargs=-1)
-def import_torrents(cache, paths):
-    api = TORRENT_API(cache)
+def import_torrents(paths):
+    api = TORRENT_API()
     for path in paths:
         api.import_torrent(path)
 
 
 @cli.command(name='list')
-@option('--cache/--no-cache', default=True)
-def list_torrents(cache):
-    api = TORRENT_API(cache)
+def list_torrents():
+    api = TORRENT_API()
     for torrent_file in api.get_torrents():
         logger.info('{}: {}', torrent_file.hash, torrent_file.announce_list)
 
