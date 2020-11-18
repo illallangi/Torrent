@@ -2,11 +2,11 @@ from sys import stderr
 
 from click import Choice as CHOICE, Path as PATH, STRING, argument, group, option
 
+from illallangi.torrentapi import API as TORRENT_API
+
 from loguru import logger
 
 from notifiers.logging import NotificationHandler
-
-from illallangi.torrentapi import API as TORRENT_API
 
 
 @group()
